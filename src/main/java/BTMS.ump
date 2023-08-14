@@ -1,0 +1,52 @@
+namespace ca.mcgill.ecse.btms.model;
+
+
+class BTMS {
+  1 <@>- * BusVehicle vehicles;
+  1 <@>- * Route routes; 
+  1 <@>- * RouteAssignment assignments;
+  1 <@>- * Driver drivers; 
+  1 <@>- * DriverSchedule schedules;
+}
+
+class BusVehicle {
+  unique String licencePlate;
+  before constructor, setLicencePlate {
+    if (aLicencePlate == null || aLicencePlate.isEmpty()) {
+      throw new RuntimeException("The licence plate of a bus cannot be empty.");
+    }
+    if (aLicencePlate.length() > 10) {
+      throw new RuntimeException("The licence plate of a bus cannot be longer than 10 characters.");
+    }
+  }
+  Boolean inRepairShop;
+
+}
+
+class Route { 
+  unique Integer number; 
+} 
+ 
+class RouteAssignment { 
+  Date date; 
+  * -- 1 BusVehicle bus; 
+  * -- 1 Route route; 
+} 
+ 
+class Driver { 
+  name; 
+  before constructor, setName { 
+    if (aName == null || aName.isEmpty()) { 
+      throw new RuntimeException("The name of a driver cannot be empty."); 
+    } 
+  } 
+  autounique id; 
+  Boolean onSickLeave;
+} 
+ 
+class DriverSchedule { 
+  enum Shift { Morning, Afternoon, Night } 
+  Shift shift; 
+  * -- 1 Driver driver; 
+  * -- 1 RouteAssignment assignment; 
+}
